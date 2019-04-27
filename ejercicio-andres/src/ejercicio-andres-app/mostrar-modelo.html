@@ -1,0 +1,43 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">>
+
+<dom-module id="mostrar-modelo">
+    <template>
+        <style>
+            :host {
+                display: block;
+                background-color: lime;
+            }
+        </style>
+    <div>
+        <h2>Nombre: [[nombreInput]]</h2>
+        <template is="dom-if" if=[[isNombre]]>
+            <h2>Marca: [[marca]]</h2>
+        </template>
+        Modelo: <input type="text" value="{{modeloInput::input}}">
+    </div>
+    </template>
+    <script>
+        class MostrarModelo extends Polymer.Element {
+            static get is() { return 'mostrar-modelo' }
+            static get properties(){
+                return {
+                    nombreInput: {
+                        value: String
+                    },
+                    modeloInput: {
+                        type: String,
+                        notify: true
+                    },
+                    marca: {
+                        type: String
+                    },
+                    isNombre:{
+                        type: Boolean
+                    }
+                };
+            }
+        }
+        window.customElements.define(MostrarModelo.is, MostrarModelo);
+    </script>
+</dom-module>

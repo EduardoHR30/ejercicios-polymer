@@ -1,0 +1,60 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<dom-module id="imprimir-frutas">
+<template>
+    <style>
+        :host {
+            display: block;
+            text-align: center;
+        }
+        
+        table {
+            border-style: double;
+            width: 300px;
+        }
+
+        td {
+            border-style: inherit
+        }
+
+    </style>
+
+    <table>
+        <tr>
+            <th>Carrito</th>
+        </tr>
+        <template is="dom-repeat" items="{{carrito}}">
+            <tr><td>[[item]]</td><tr>
+        </template>
+    </table>
+</template>
+
+<script>
+    class ImprimirFrutas extends Polymer.Element {
+        static get is() { return 'imprimir-frutas'; }
+        static get properties() {
+            return {
+                fruta: {
+                    type: String,
+                    observer: 'llenarCarrito',
+                    notify: true
+                },
+                carrito: {
+                    type: Array,
+                    value: []
+                }
+            };
+        }
+
+        llenarCarrito() {
+            if (this.fruta != '') {
+                this.push('carrito', this.fruta)
+                this.fruta = '';
+                console.log(this.carrito)
+            }
+        }
+    }
+    window.customElements.define(ImprimirFrutas.is, ImprimirFrutas);
+</script>
+</dom-module>

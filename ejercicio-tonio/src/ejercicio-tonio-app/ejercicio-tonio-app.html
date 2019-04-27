@@ -1,0 +1,73 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./imprimir-frutas.html">
+
+<dom-module id="ejercicio-tonio-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+        align-content: center;
+      }
+
+      td {
+        border-style: groove;
+      }
+
+      img {
+        width: 200px;
+        height: 200px
+      }
+    </style>
+    <h3>Tianguis</h3>
+    <table class="borde">
+      <tr>
+        <td>
+          <img on-click="isManzana" src="http://deltablau.com/wp-content/uploads/2017/06/manzana.png">
+        </td>
+        <td>
+          <img on-click="isPera" src="https://www.nogalfruits.es/wp-content/uploads/2014/02/pera-ercolina-2.png">
+        </td>
+        <td>
+          <img on-click="isUva" src="https://www.frutasluisi.com/wp-content/uploads/2017/11/uvas.png">  
+        </td>
+        <td>
+          <img on-click="isKiwi" src="https://www.teisseire.com/media/1739/kiwipng.png">  
+        </td>
+      </tr>
+    </table>
+
+    <imprimir-frutas fruta="{{fruta}}"></imprimir-frutas>
+  
+  </template>
+
+  <script>
+    class EjercicioTonioApp extends Polymer.Element {
+      static get is() { return 'ejercicio-tonio-app'; }
+      static get properties() {
+        return {
+          fruta: {
+            type: String,
+          }
+        };
+      }
+
+      isManzana(){
+        this.fruta = 'Manzana';
+      }
+
+      isPera(){
+        this.fruta = 'Pera';
+      }
+
+      isUva(){
+        this.fruta = 'Uva';
+      }
+
+      isKiwi(){
+        this.fruta = 'Kiwi';
+      }
+    }
+
+    window.customElements.define(EjercicioTonioApp.is, EjercicioTonioApp);
+  </script>
+</dom-module>

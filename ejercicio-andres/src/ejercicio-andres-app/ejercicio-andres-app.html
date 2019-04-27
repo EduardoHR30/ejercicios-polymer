@@ -1,0 +1,80 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./mostrar-modelo.html">
+
+<dom-module id="ejercicio-andres-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+        background-color: aqua;
+      }
+
+      .bien{
+        background-color: green;
+      }
+      .mal{
+        background-color: red;
+      }
+    </style>
+    <h2>Polymer</h2>
+    <div>
+      <h2 class$="[[claseNombre]]">[[nombreInput]] [[modeloInput]]</h2>
+      <input type="text" value="{{nombreInput::input}}">
+      <mostrar-modelo is-nombre="[[isNombre]]" marca="[[marca]]" nombre-input="[[nombreInput]]" 
+        modelo-input="{{modeloInput}}"></mostrar-modelo>
+    </div>
+  </template>
+
+  <script>
+    class EjercicioAndresApp extends Polymer.Element {
+      static get is() { return 'ejercicio-andres-app'; }
+      static get properties() {
+        return {
+          marcas: {
+            type: Array,
+            value: [
+              {
+                nombre:'Vento', marca: 'VW'
+              },
+              {
+                nombre: 'Spark', marca: 'Chevrolet'
+              }
+            ]
+          },
+          nombreInput:{
+            type: String,
+            observer: 'verificarNombre'
+          },
+          modeloInput:{
+            type: String
+          },
+          marca: {
+            type: String
+          },
+          isNombre:{
+                  type: Boolean,
+                  value: false
+          },
+          claseNombre:{
+            type: String
+          }
+        };
+      }
+
+      verificarNombre() {
+        console.log('verificarNombre');
+        let indiceMarca = this.marcas.findIndex(i => i.nombre === this.nombreInput);
+        if (indiceMarca === -1) {
+          this.claseNombre = 'mal'
+          this.isNombre = false;
+        } else {
+          this.marca = this.marcas[indiceMarca].marca;
+          this.claseNombre = 'bien'
+          this.isNombre = true;
+        }
+      }
+    }
+
+    window.customElements.define(EjercicioAndresApp.is, EjercicioAndresApp);
+  </script>
+</dom-module>

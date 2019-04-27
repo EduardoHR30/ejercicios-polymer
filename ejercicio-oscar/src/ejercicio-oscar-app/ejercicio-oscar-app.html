@@ -1,0 +1,139 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<dom-module id="ejercicio-oscar-app">
+  <template>
+    <style>
+      :host {
+        background-color: cyan;
+        display: block; 
+        width: 500px;
+      }
+
+      .container{
+        display: grid;
+        grid-template-columns: [c1] 1fr [c2];
+        grid-template-rows: [r1] 10% [r2] 5% [r3] 1fr [r4];
+        height: 100vh;
+      }
+      .item:nth-of-type(1) {
+        grid-column: c1/c2;
+        grid-row: r1/r2;
+        border-block-end-style: solid;
+        border-block-end-width: 1px;
+      }
+      .item:nth-of-type(2) {
+        grid-column: c1/c2;
+        grid-row: r2/r3;
+        border-block-end-style: solid;
+        border-block-end-width: 1px;
+        margin-block-start: 5px;
+      }
+      .item:nth-of-type(3) {
+        grid-column: c1/c2;
+        grid-row: r3/r4;
+        margin-block-start: 5px;
+      }
+      input{
+        width: 75px;
+      }
+      
+      .cuadro {
+        border-style: solid;
+        border-color: white;
+        background-color: blue;
+        font-size: 25px;
+        color: white;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+      }
+
+      .cuadro:hover{
+        background-color: green;
+      }
+      
+    </style>
+    <div class="container">
+      <div class="item">
+        <h2>Array Circular</h2>
+      </div>
+      <div class="item">
+        Size: <input type="number" min=1 max=20 value="{{sizeArr::input}}"> 
+        Rotaciones: <input type="number" min=1 max="{{arr.length}}" value="{{rotaciones::input}}">
+      </div>
+      <div class="item">
+        <h3>Arreglo</h3>
+        <template is="dom-repeat" items="[[arr]]">
+          <div class="cuadro">[[item]]</div>
+        </template>
+
+        <h3>Arreglo Rotado</h3>
+        <div id="arrayRotated">
+          <template is="dom-repeat" items="[[arrRotado]]">
+            <div class="cuadro">[[item]]</div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    class EjercicioOscarApp extends Polymer.Element {
+      static get is() { return 'ejercicio-oscar-app'; }
+      static get properties() {
+        return {
+          sizeArr: {
+            type: Number,
+            observer: 'crearArr'
+          },
+          rotaciones: {
+            type: Number,
+            // value: 1,
+            observer: 'crearRotacion'
+          },
+          arr: {
+            type: Array,
+            value: []
+          },
+          arrRotado: {
+            type: Array,
+            value: []
+          }
+        };
+      }
+
+      crearArr(){
+        let arrCrear = [];
+        for (let index = 0; index < this.sizeArr; index++) {
+          arrCrear.push(Math.round(Math.random()*30));
+          // console.log(this.arr)
+        }
+
+        this.arr = arrCrear;
+        this.rotaciones = 1;
+        this.crearRotacion();
+      }
+
+      crearRotacion(){
+          let arrRot = this.arr.slice(0);
+          // console.log('copia arr:', arrRot);
+
+        for (let index = 0; index < this.rotaciones; index++) {
+          arrRot.unshift(arrRot.pop())
+        }
+          this.arrRotado = arrRot;
+          // console.log('arrRot', arrRot);
+          document.querySelector('ejercicio-oscar-app').shadowRoot.querySelectorAll('#arrayRotated')[0].childNodes
+            .forEach(element => {
+              element.addEventListener('mouseout', e => {
+                console.log(e)
+                element.style.display = "none"
+              });
+            })
+      }
+    }
+
+    window.customElements.define(EjercicioOscarApp.is, EjercicioOscarApp);
+  </script>
+</dom-module>
