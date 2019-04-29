@@ -1,0 +1,213 @@
+<base href="https://cdn.rawgit.com/download/polymer-cdn/1.8.0/lib/">
+<script src="webcomponentsjs/webcomponents-lite.min.js"></script>
+<link rel="import" href="polymer/polymer.html">
+
+<dom-module id="ejercicio-eduardo-polymer1-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+        background-color: cadetblue;
+        --fnt-size: 50px;
+      }
+      .container{
+        display: grid;
+        grid-template-columns: [c1] 1fr [c2] 1fr [c3];
+        grid-template-rows: [r1] 50px [r2] 1fr [r3] 1fr [r4];
+        height: 75vh;
+        text-align: center;
+      }
+      .item:nth-of-type(1) {
+        grid-column: c1/c3;
+        grid-row: r1/r2;
+        margin-top: 10px;
+        font-size: 20px;
+      }
+      .item:nth-of-type(2) {
+        grid-column: c1/c2;
+        grid-row: r2/r3;
+        font-size: var(--fnt-size);
+      }
+      .item:nth-of-type(3) {
+        grid-column: c2/c3;
+        grid-row: r2/r3;
+        font-size: var(--fnt-size);
+      }
+      .item:nth-of-type(4) {
+        grid-column: c1/c3;
+        grid-row: r3/r4;
+        margin-top: 10px
+      }
+      .mensaje{
+        font-size: 15px;
+        font-weight: bold;
+      }
+    </style>
+    
+    <div class="container">
+        <div class="item">
+          <template is="dom-if" if="[[ingresarNombre]]">
+            Nombre: <input placeholder="Ingresa tu nombre" type="text" value="{{nombre::input}}">
+            <button on-click="comenzar">Comenzar</button>
+            <p class="mensaje">[[mensaje]]</p>
+          </template>
+          <template is="dom-if" if="[[!ingresarNombre]]">
+            <button on-click="reset">Reset</button>
+          </template>
+        </div>
+        <template is="dom-if" if="[[!ingresarNombre]]">
+          <div class="item">
+            <p><b>Tecla</b></p>
+            [[key]]
+          </div>
+          <div class="item">
+            <p><b>Código</b></p>
+            [[keyCode]]
+          </div>
+        </template>
+        <div class="item">
+          <template is="dom-if" if="[[!ingresarNombre]]">
+            <key-record letra="{{letra}}" nombre="[[nombre]]" is-reset="[[isReset]]"></key-record>
+          </template>
+        </div>
+      </div>
+  </template>
+
+  <script>
+    document.addEventListener('WebComponentsReady', function() {
+      Polymer({
+        is: 'ejercicio-eduardo-polymer1-app',
+        properties: {
+          ingresarNombre: {
+            type: Boolean,
+            value: true
+          },
+          nombre: {
+            type: String
+          },
+          key: {
+            type: String,
+          },
+          keyCode: {
+            type: String
+          },
+          letra: {
+            type: String
+          },
+          mensaje: {
+            type: String
+          },
+          isReset: {
+            type: Boolean,
+            value: false
+          }
+        },
+        comenzar: function() {
+          if (this.nombre != ''){
+            document.addEventListener('keydown', e => this.identificarKey(e))
+            this.ingresarNombre = false;
+            this.isReset = false;
+            this.key = '';
+            this.keyCode = '';
+          } else {
+            this.mensaje = 'Es necesario ingresar un nombre para continuar';
+          }
+        },
+        identificarKey: function(e) {
+          //console.log(e);
+          this.key = e.key;
+          this.keyCode = e.keyCode;
+          this.letra = this.key;
+        },
+        reset: function() {
+          // document.removeEventListener('keydown', e => this.identificarKey(e))
+          this.isReset = true;
+          this.mensaje = '';
+          this.ingresarNombre = true;
+        }
+      });
+    });
+  </script>
+</dom-module>
+
+<dom-module id="key-record">
+    <template>
+      <style>
+        :host {
+          display: block;
+          text-align: initial;
+          font-size: 25px;
+        }
+    
+        .incluido {
+          color: green;
+          font-size: 100px;
+        }
+    
+        .no-incluido {
+          color: red;
+          font-size: 100px;
+        }
+      </style>
+      
+      <div>[[record]]</div>
+      <div class$="[[estilo]]">[[nombre]]</div>
+    </template>
+  
+    <script>
+      document.addEventListener('WebComponentsReady', function() {
+        Polymer({
+          is: 'key-record',
+          properties: {
+            letra: {
+              type: String,
+              observer: 'registro',
+              notify: true
+            },
+            letraRecord: {
+              type: Array,
+              value: []
+            },
+            record: {
+              type: String
+            },
+            nombre: {
+              type: String
+            },
+            estilo: {
+              type: String
+            },
+            isReset: {
+              type: Boolean,
+              notify: true
+            }
+          },
+          registro: function () {
+            if(!this.isReset)
+            {
+              if (this.letraRecord.length >= 5) {
+                this.letraRecord.shift();
+              }
+  
+              this.push('letraRecord', this.letra);
+              this.record = this.letraRecord.join(' --> ')
+              this.enNombre();
+            } else {
+              this.record = '';
+              //console.log(this.record)
+              this.letraRecord= [];
+            }
+          },
+          enNombre: function () {
+            let arr = Array.from(this.nombre)
+            if (arr.some(item => item === this.letra)) {
+              this.estilo = 'incluido'
+            } else {
+              this.estilo = 'no-incluido'
+            }
+            //console.log(this.estilo)
+          }
+        });
+      });
+    </script>
+  </dom-module>

@@ -1,0 +1,64 @@
+<base href="https://cdn.rawgit.com/download/polymer-cdn/1.8.0/lib/">
+<script src="webcomponentsjs/webcomponents-lite.min.js"></script>
+<link rel="import" href="polymer/polymer.html">
+
+<dom-module id="hijo-bryan">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+      <p>[[nombreHijo]]: Tengo [[tortasPedro]] torta(s) de chilaquiles!</p>
+      <button on-click="recibirHijo">Recibir torta de chilaquiles</button>
+      <button on-click="regresarHijo">Regresar torta de chilaquiles</button>
+      <p>[[mensajeHijo]]</p>
+  </template>
+
+  <script>
+    document.addEventListener('WebComponentsReady', function() {
+      Polymer({
+        is: 'hijo-bryan',
+        properties: {
+          nombreHijo: {
+            type: String
+          },
+          tortasTotal: {
+            type: Number,
+            value: 10,
+          },
+          tortasHijo: {
+            type: Number,
+            value: 0
+          },
+          mensajeHijo: {
+            type: String
+          },
+          mensajeTotal: {
+            type: String
+          }
+        },
+        recibirHijo: function(){
+          if(this.tortasTotal > 0) {
+            this.tortasHijo = this.tortasHijo + 1;
+            this.tortasTotal = this.tortasTotal - 1;
+            this.mensajeTotal = '';
+            this.mensajeHijo= '';
+          } else {
+            this.mensajeTotal = 'Ya no tienes tortas que agarrar >:c';
+          }
+        },
+        regresarHijo: function(){
+          if(this.tortasHijo > 0) {
+            this.tortasHijo = this.tortasHijo - 1;
+            this.tortasTotal = this.tortasTotal + 1;
+            this.mensajeHijo = '';
+            this.mensajeTotal = '';
+          } else {
+            this.mensajeHijo = 'Ya no tienes tortas que regresar >:c';
+          }
+        }
+      });
+    });
+  </script>
+</dom-module>

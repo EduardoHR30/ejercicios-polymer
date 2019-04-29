@@ -1,0 +1,180 @@
+<base href="https://cdn.rawgit.com/download/polymer-cdn/1.8.0/lib/">
+<script src="webcomponentsjs/webcomponents-lite.min.js"></script>
+<link rel="import" href="polymer/polymer.html">
+<!-- <link rel="import" href="/.hijo-bryan.html"> -->
+
+<dom-module id="ejercicio-bryan-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .container {
+        display: grid;
+        grid-template-columns: [c1] 1fr [c2] 1fr [c3] 1fr [c4];
+        grid-template-rows: [r1] 1fr [r2] 1fr [r3];
+        background-color: blanchedalmond;
+        text-align: center;
+        grid-gap: 10px;
+        height: 75vh;
+      }
+      .item:nth-of-type(1) {
+        grid-column: c1/c2;
+        grid-row: r1/r2;
+        border-style: solid;
+      }
+      .item:nth-of-type(2) {
+        grid-column: c2/c3;
+        grid-row: r1/r2;
+        border-style: solid;
+      }
+      .item:nth-of-type(3) {
+        grid-column: c3/c4;
+        grid-row: r1/r2;
+        border-style: solid;
+      }
+      .item:nth-of-type(4) {
+        grid-column: c1/c4;
+        grid-row: r2/r3;
+        border-style: none;
+      }
+      p{
+        font-size: 25px;
+      }
+      h1 {
+        font-size: 70px;
+      }
+    </style>
+    <div class="container">
+      <div class="item">
+        <p>Pedro: Tengo [[tortasPedro]] torta(s) de chilaquiles!</p>
+        <button on-click="recibirPedro">Recibir torta de chilaquiles</button>
+        <button on-click="regresarPedro">Regresar torta de chilaquiles</button>
+        <p>[[mensajePedro]]</p>
+      </div>
+      <div class="item">
+        <hijo-bryan nombre-hijo="Pepe" tortas-total="{{tortasTotal}}" mensaje-total="{{mensajeTotal}}"></hijo-bryan>
+      </div>
+      <div class="item">
+        <hijo-bryan nombre-hijo="Toño" tortas-total="{{tortasTotal}}" mensaje-total="{{mensajeTotal}}"></hijo-bryan>
+      </div>
+      <div class="item">
+        <h1>Quedan [[tortasTotal]] torta(s) de chilaquiles!</h1>
+        <input type="number" value="{{tortasTotal::input}}">
+        <p>[[mensajeTotal]]</p>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    document.addEventListener('WebComponentsReady', function() {
+      Polymer({
+        is: 'ejercicio-bryan-app',
+        properties: {
+          name: {
+            type: String
+          },
+          tortasTotal: {
+            type: Number,
+            value: 10
+          },
+          tortasPedro: {
+            type: Number,
+            value: 0
+          },
+          mensajePedro: {
+            type: String
+          },
+          mensajeTotal: {
+            type: String
+          }
+        },
+        recibirPedro: function(){
+          if(this.tortasTotal > 0) {
+            this.tortasPedro = this.tortasPedro + 1;
+            this.tortasTotal = this.tortasTotal - 1;
+            this.mensajeTotal = '';
+            this.mensajePedro= '';
+          } else {
+            this.mensajeTotal = 'Ya no tienes tortas que agarrar >:c';
+          }
+        },
+        regresarPedro: function(){
+          if(this.tortasPedro > 0) {
+            this.tortasPedro = this.tortasPedro - 1;
+            this.tortasTotal = this.tortasTotal + 1;
+            this.mensajePedro = '';
+            this.mensajeTotal = '';
+          } else {
+            this.mensajePedro = 'Ya no tienes tortas que regresar >:c';
+          }
+        }
+      });
+    });
+  </script>
+</dom-module>
+
+<dom-module id="hijo-bryan">
+    <template>
+      <style>
+        :host {
+          display: block;
+        }
+        p{
+        font-size: 25px;
+        }
+      </style>
+        <p>[[nombreHijo]]: Tengo [[tortasHijo]] torta(s) de chilaquiles!</p>
+        <button on-click="recibirHijo">Recibir torta de chilaquiles</button>
+        <button on-click="regresarHijo">Regresar torta de chilaquiles</button>
+        <p>[[mensajeHijo]]</p>
+    </template>
+  
+    <script>
+      document.addEventListener('WebComponentsReady', function() {
+        Polymer({
+          is: 'hijo-bryan',
+          properties: {
+            nombreHijo: {
+              type: String
+            },
+            tortasTotal: {
+              type: Number,
+              notify: true
+            },
+            tortasHijo: {
+              type: Number,
+              value: 0
+            },
+            mensajeHijo: {
+              type: String
+            },
+            mensajeTotal: {
+              type: String,
+              notify: true
+            }
+          },
+          recibirHijo: function(){
+            if(this.tortasTotal > 0) {
+              this.tortasHijo = this.tortasHijo + 1;
+              this.tortasTotal = this.tortasTotal - 1;
+              this.mensajeTotal = '';
+              this.mensajeHijo= '';
+            } else {
+              this.mensajeTotal = 'Ya no tienes tortas que agarrar >:c';
+            }
+          },
+          regresarHijo: function(){
+            if(this.tortasHijo > 0) {
+              this.tortasHijo = this.tortasHijo - 1;
+              this.tortasTotal = this.tortasTotal + 1;
+              this.mensajeHijo = '';
+              this.mensajeTotal = '';
+            } else {
+              this.mensajeHijo = 'Ya no tienes tortas que regresar >:c';
+            }
+          }
+        });
+      });
+    </script>
+  </dom-module>
