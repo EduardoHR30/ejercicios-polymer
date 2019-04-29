@@ -1,0 +1,117 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="./key-record.html">
+
+<dom-module id="ejercicio-eduardo-app">
+  <template>
+    <style>
+      :host {
+        background-color: cadetblue;
+        display: block;
+        --fnt-size: 50px;
+      }
+
+      .container{
+        display: grid;
+        grid-template-columns: [c1] 1fr [c2] 1fr [c3];
+        grid-template-rows: [r1] 50px [r2] 1fr [r3] 1fr [r4];
+        height: 75vh;
+        text-align: center;
+      }
+      .item:nth-of-type(1) {
+        grid-column: c1/c3;
+        grid-row: r1/r2;
+        margin-top: 10px;
+        font-size: 20px;
+      }
+      .item:nth-of-type(2) {
+        grid-column: c1/c2;
+        grid-row: r2/r3;
+        font-size: var(--fnt-size);
+      }
+      .item:nth-of-type(3) {
+        grid-column: c2/c3;
+        grid-row: r2/r3;
+        font-size: var(--fnt-size);
+      }
+      .item:nth-of-type(4) {
+        grid-column: c1/c3;
+        grid-row: r3/r4;
+        margin-top: 10px
+      }
+      .mensaje{
+        font-size: 15px;
+        font-weight: bold;
+      }
+    </style>
+    <div class="container">
+      <div class="item">
+        <template is="dom-if" if="[[ingresarNombre]]">
+          Nombre: <input placeholder="Ingresa tu nombre" type="text" value="{{nombre::input}}">
+          <button on-click="comenzar">Comenzar</button>
+          <p class="mensaje">[[mensaje]]</p>
+        </template>
+      </div>
+      <template is="dom-if" if="[[!ingresarNombre]]">
+        <div class="item">
+          <p><b>Tecla</b></p>
+          [[key]]
+        </div>
+        <div class="item">
+          <p><b>Código</b></p>
+          [[keyCode]]
+        </div>
+      </template>
+      <div class="item">
+        <key-record letra="{{letra}}" nombre="[[nombre]]"></key-record>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    class EjercicioEduardoApp extends Polymer.Element {
+      static get is() { return 'ejercicio-eduardo-app'; }
+      static get properties() {
+        return {
+          ingresarNombre: {
+            type: Boolean,
+            value: true
+          },
+          nombre: {
+            value: String
+          },
+          key: {
+            type: String,
+          },
+          keyCode: {
+            type: String
+          }, 
+          letra: {
+            type: String
+          },
+          mensaje: {
+            type: String
+          }
+        };
+      }
+
+      comenzar() {
+        if (this.nombre != ''){
+          document.addEventListener('keydown', e => this.identificarKey(e))
+          this.ingresarNombre = false;
+        } else {
+          this.mensaje = 'Es necesario ingresar un nombre para continuar';
+        }
+      }
+
+      identificarKey(e) {
+        // console.log(e);
+        this.key = e.key;
+        this.keyCode = e.keyCode;
+        this.letra = this.key;
+      }
+    }
+
+    window.customElements.define(EjercicioEduardoApp.is, EjercicioEduardoApp);
+  </script>
+</dom-module>

@@ -1,0 +1,74 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<dom-module id="key-record">
+    <template>
+        <style>
+            :host {
+                display: block;
+                text-align: initial;
+                font-size: 25px;
+            }
+
+            .incluido {
+                color: green;
+                font-size: 100px;
+            }
+
+            .no-incluido {
+                color: red;
+                font-size: 100px;
+            }
+        </style>
+
+        <div>[[record]]</div>
+        <div class$="[[estilo]]">[[nombre]]</div>
+                
+    </template>
+    <script>
+        class KeyRecord extends Polymer.Element {
+            static get is() { return 'key-record' }
+            static get properties(){
+                return {
+                    letra: {
+                        type: String,
+                        observer: 'registro',
+                        notify: true
+                    },
+                    letraRecord: {
+                        type: Array,
+                        value: []
+                    },
+                    record: {
+                        type: String
+                    },
+                    nombre: {
+                        type: String
+                    },
+                    estilo: {
+                        type: String
+                    }
+                };
+            }
+            registro(){
+                    if (this.letraRecord.length >= 5) {
+                        this.letraRecord.shift();
+                    }
+
+                    this.push('letraRecord', this.letra);
+                    this.record = this.letraRecord.join(' --> ')
+                    this.enNombre();
+            }
+            enNombre(){
+                let arr = Array.from(this.nombre)
+                if (arr.some(item => item === this.letra)){
+                     this.estilo = 'incluido'
+                } else {
+                    this.estilo = 'no-incluido'
+                }
+                console.log(this.estilo)
+            }
+        }
+        window.customElements.define(KeyRecord.is, KeyRecord);
+    </script>
+</dom-module>
