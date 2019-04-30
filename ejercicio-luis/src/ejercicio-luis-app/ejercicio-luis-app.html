@@ -1,0 +1,36 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./filtrar-array.html">
+
+<dom-module id="ejercicio-luis-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+        background-color: green;
+      }
+    </style>
+    <p>Arreglo: [[[arrText]]]</p>
+    <filtrar-array arr="[[arr]]"></filtrar-array>
+  </template>
+
+  <script>
+    class EjercicioLuisApp extends Polymer.Element {
+      static get is() { return 'ejercicio-luis-app'; }
+      static get properties() {
+        return {
+          arr: {
+            type: Array,
+            value: [12,23,52,22,99,65,68,27]
+          },
+          arrText: String
+        };
+      }
+      constructor(){
+        super();
+        this.arrText = this.arr.toString();
+      }
+    }
+
+    window.customElements.define(EjercicioLuisApp.is, EjercicioLuisApp);
+  </script>
+</dom-module>

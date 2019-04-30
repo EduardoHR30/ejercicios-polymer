@@ -1,0 +1,80 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="ejercicio-rafa-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+        background-color: #5d70c4;
+      }
+      tr, td {
+        height: 100px;
+        width: 100px;
+      }
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <!-- <template> -->
+      <h2>La exótica!!!</h2>
+      <table>
+        <tr>
+          <td>
+            <br>Manzana</br>
+            <img id="Manzana" on-click="seleccion" src="http://deltablau.com/wp-content/uploads/2017/06/manzana.png">
+            </br>Precio: $[[inventario.0.precio]] 
+          </td>
+          <td>
+            <br>Pera</br>
+            <img id="Pera" on-click="seleccion" src="https://www.nogalfruits.es/wp-content/uploads/2014/02/pera-ercolina-2.png">
+          </br>Precio: $[[inventario.1.precio]]
+          </td>
+          <td>
+            <br>Melón</br>
+            <img id="Melón" on-click="seleccion" src="http://www.fondation-louisbonduelle.org/wp-content/uploads/2016/09/melon_194841866.png">
+          </br>Precio: $[[inventario.2.precio]]
+          </td>
+        </tr>
+      </table>
+      <button on-click="masProducto">Más producto</button>
+      <button on-click="menosProducto">Menos producto</button>
+      <button on-click="comprar">Comprar</button>
+    <!-- </template> -->
+  </template>
+
+  <script>
+    class EjercicioRafaApp extends Polymer.Element {
+      static get is() { return 'ejercicio-rafa-app'; }
+      static get properties() {
+        return {
+          inventario: {
+            type:Array,
+            value: [
+              {producto: 'Manzana', precio: 5.35, cantidad: 10},
+              {producto: 'Pera', precio: 6.99, cantidad: 10},
+              {producto: 'Melón', precio: 20.25, cantidad: 10}
+            ]
+          },
+          carrito: {
+            type:Array,
+            value: [
+              {producto: 'Manzana', cantidad: 0},
+              {producto: 'Pera', cantidad: 0},
+              {producto: 'Melón', cantidad: 0}
+            ]
+          },
+          seleccion: String
+        };
+      }
+      seleccion(e){
+        this.seleccion = e.target.id
+      }
+      masProducto() { 
+        
+      }
+    }
+
+    window.customElements.define(EjercicioRafaApp.is, EjercicioRafaApp);
+  </script>
+</dom-module>

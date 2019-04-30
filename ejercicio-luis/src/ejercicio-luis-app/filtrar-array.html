@@ -1,0 +1,68 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<dom-module id="filtrar-array">
+  <template>
+    <style>
+      :host {
+        display: block;
+        background-color: green;
+      }
+      div {
+          height: 30px;
+          width: 30px;
+          background-color: aqua;
+      }
+    </style>
+    <button on-click="filtrar">filtrar</button>
+    <p>Pares</p>
+    <template is="dom-repeat" items=[[pares]]>
+        <div>[[item]]</div></br>
+    </template>
+    <p>Mayor: [[mayorPares]]</p>
+    <p>Impares</p>
+    <template is="dom-repeat" items=[[impares]]>
+        <div>[[item]]</div></br>
+    </template>
+    <p>Mayor: [[mayorImpares]]</p>
+  </template>
+
+  <script>
+    class FiltrarArray extends Polymer.Element {
+      static get is() { return 'filtrar-array'; }
+      static get properties() {
+        return {
+          arr: Array,
+          pares: {
+            type: Array,
+            value: []
+          },
+          impares: {
+            type: Array,
+            value: []
+          },
+          mayorPares: Number,
+          mayorImpares: Number
+        };
+      }
+      filtrar(){
+            this.pares = this.arr.filter((item, index) => {
+            if (index % 2 === 0){
+                return item;
+            }
+        });
+        let arrPar = this.pares.slice(0);
+        this.mayorPares = arrPar.sort((a,b) => b-a)[0]
+
+        this.impares = this.arr.filter((item, index) => {
+            if (index % 2){
+                return item;
+            }
+        });
+        let arrImpar = this.impares.slice(0);
+        this.mayorImpares = arrImpar.sort((a,b) => b-a)[0]
+      }
+    }
+
+    window.customElements.define(FiltrarArray.is, FiltrarArray);
+  </script>
+</dom-module>

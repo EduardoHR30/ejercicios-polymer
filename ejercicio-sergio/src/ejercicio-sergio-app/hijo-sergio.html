@@ -1,0 +1,67 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<dom-module id="hijo-sergio">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+            .green {
+                background-color: green;
+            }
+            .red {
+                background-color: red;
+            }
+            .blue {
+                background-color: blue;
+            }
+        </style>
+
+        <div class$="[[color]]">
+            <p>Hijo [[mensaje]]</p>
+            <input type="text" value="{{mensaje::input}}">
+        </div>
+
+        <button id="green" on-click="setColor">TO GREEN</button>
+        <button id="red" on-click="setColor">TO RED</button>
+        <button id="blue" on-click="setColor">TO BLUE</button>
+   
+        <table class$="[[color]]">
+            <tr>
+                <th>ID</th><th>NOMBRE</th><th>EDAD</th>
+            </tr>
+            <template is="dom-repeat" items="[[personas]]">
+                <tr>
+                    <td>[[item.id]]</td>
+                    <td>[[item.name]]</td>
+                    <td>[[item.edad]]</td>
+                </tr>
+            </template>
+        </table>
+    </template>
+
+    <script>
+        class HijoSergio extends Polymer.Element {
+            static get is() { return 'hijo-sergio'; }
+            static get properties() {
+                return {
+                    mensaje: String,
+                    color: String,
+                    personas: {
+                        type: Array,
+                        value: [
+                            {id: 1, name: 'Edardo', edad: 25},
+                            {id: 2, name: 'Elvia', edad: 52},
+                            {id: 3, name: 'Virginia', edad: 78}
+                        ]
+                    }
+                };
+            }
+            setColor(e){
+                this.color = e.target.id
+            }
+        }
+        window.customElements.define(HijoSergio.is, HijoSergio);
+    </script>
+</dom-module>
