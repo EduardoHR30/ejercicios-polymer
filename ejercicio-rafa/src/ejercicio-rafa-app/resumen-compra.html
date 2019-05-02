@@ -1,0 +1,50 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<dom-module id="resumen-compra">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      /* tr, td {
+        height: 100px;
+        width: 100px;
+      } */
+      
+    </style>
+      <table>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Total</th>
+        </tr>
+        <template is="dom-repeat" items=[[carrito]]>
+            <tr>
+                <td>[[item.producto]]</td>
+                <td>[[item.cantidad]]</td>
+                <td>$[[item.precio]]</td>
+                <td>$[[item.total]]</td>
+            </tr>
+        </template>
+      </table>
+  </template>
+
+  <script>
+    class ResumenCompra extends Polymer.Element {
+      static get is() { return 'resumen-compra' }
+      static get properties() {
+        return {
+          carrito: Array
+        };
+      }
+      constructor(){
+          super();
+          this.forEach('carrito', element => element.total = element.cantidad * element.precio)
+      }
+    }
+
+    window.customElements.define(ResumenCompra.is, ResumenCompra);
+  </script>
+</dom-module>
